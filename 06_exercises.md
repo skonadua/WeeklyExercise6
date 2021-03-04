@@ -91,6 +91,25 @@ fakeharvest <- read_csv("https://raw.githubusercontent.com/skonadua/scraping_etc
   select(-X1) %>% 
   mutate(date=mdy(date))
 View(fakeharvest)
+
+print(fakeharvest)
+```
+
+```
+## # A tibble: 685 x 5
+##    vegetable variety               date       weight units
+##    <chr>     <chr>                 <date>      <dbl> <chr>
+##  1 lettuce   reseed                2020-06-06     20 grams
+##  2 radish    Garden Party Mix      2020-06-06     36 grams
+##  3 lettuce   reseed                2020-06-08     15 grams
+##  4 lettuce   reseed                2020-06-09     10 grams
+##  5 radish    Garden Party Mix      2020-06-11     67 grams
+##  6 lettuce   Farmer's Market Blend 2020-06-11     12 grams
+##  7 spinach   Catalina              2020-06-11      9 grams
+##  8 beets     leaves                2020-06-11      8 grams
+##  9 radish    Garden Party Mix      2020-06-13     53 grams
+## 10 lettuce   <NA>                  2020-06-13     19 grams
+## # ... with 675 more rows
 ```
 
   
@@ -102,6 +121,25 @@ library(readr)
 Groceries_dataset_csv <- read_csv("Groceries_dataset.csv.zip", 
     col_types = cols(Date = col_character()))
 View(Groceries_dataset_csv)
+
+print(Groceries_dataset_csv)
+```
+
+```
+## # A tibble: 38,765 x 3
+##    Member_number Date       itemDescription 
+##            <dbl> <chr>      <chr>           
+##  1          1808 21-07-2015 tropical fruit  
+##  2          2552 05-01-2015 whole milk      
+##  3          2300 19-09-2015 pip fruit       
+##  4          1187 12-12-2015 other vegetables
+##  5          3037 01-02-2015 whole milk      
+##  6          4941 14-02-2015 rolls/buns      
+##  7          4501 08-05-2015 other vegetables
+##  8          3803 23-12-2015 pot plants      
+##  9          2762 20-03-2015 whole milk      
+## 10          4119 12-02-2015 tropical fruit  
+## # ... with 38,755 more rows
 ```
 
 
@@ -168,7 +206,7 @@ tab_gard
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uhaisqpdee .gt_table {
+#llamfehkjh .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -193,7 +231,7 @@ tab_gard
   border-left-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_heading {
+#llamfehkjh .gt_heading {
   background-color: #003300;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -205,7 +243,7 @@ tab_gard
   border-right-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_title {
+#llamfehkjh .gt_title {
   color: #FFFFFF;
   font-size: 125%;
   font-weight: initial;
@@ -215,7 +253,7 @@ tab_gard
   border-bottom-width: 0;
 }
 
-#uhaisqpdee .gt_subtitle {
+#llamfehkjh .gt_subtitle {
   color: #FFFFFF;
   font-size: 85%;
   font-weight: initial;
@@ -225,13 +263,13 @@ tab_gard
   border-top-width: 0;
 }
 
-#uhaisqpdee .gt_bottom_border {
+#llamfehkjh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_col_headings {
+#llamfehkjh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -246,7 +284,7 @@ tab_gard
   border-right-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_col_heading {
+#llamfehkjh .gt_col_heading {
   color: #FFFFFF;
   background-color: #99CC00;
   font-size: 100%;
@@ -266,7 +304,7 @@ tab_gard
   overflow-x: hidden;
 }
 
-#uhaisqpdee .gt_column_spanner_outer {
+#llamfehkjh .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #99CC00;
   font-size: 100%;
@@ -278,15 +316,15 @@ tab_gard
   padding-right: 4px;
 }
 
-#uhaisqpdee .gt_column_spanner_outer:first-child {
+#llamfehkjh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uhaisqpdee .gt_column_spanner_outer:last-child {
+#llamfehkjh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uhaisqpdee .gt_column_spanner {
+#llamfehkjh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -298,7 +336,7 @@ tab_gard
   width: 100%;
 }
 
-#uhaisqpdee .gt_group_heading {
+#llamfehkjh .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -320,7 +358,7 @@ tab_gard
   vertical-align: middle;
 }
 
-#uhaisqpdee .gt_empty_group_heading {
+#llamfehkjh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -335,15 +373,15 @@ tab_gard
   vertical-align: middle;
 }
 
-#uhaisqpdee .gt_from_md > :first-child {
+#llamfehkjh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uhaisqpdee .gt_from_md > :last-child {
+#llamfehkjh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uhaisqpdee .gt_row {
+#llamfehkjh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -362,7 +400,7 @@ tab_gard
   overflow-x: hidden;
 }
 
-#uhaisqpdee .gt_stub {
+#llamfehkjh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -374,7 +412,7 @@ tab_gard
   padding-left: 12px;
 }
 
-#uhaisqpdee .gt_summary_row {
+#llamfehkjh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -384,7 +422,7 @@ tab_gard
   padding-right: 5px;
 }
 
-#uhaisqpdee .gt_first_summary_row {
+#llamfehkjh .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -394,7 +432,7 @@ tab_gard
   border-top-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_grand_summary_row {
+#llamfehkjh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -404,7 +442,7 @@ tab_gard
   padding-right: 5px;
 }
 
-#uhaisqpdee .gt_first_grand_summary_row {
+#llamfehkjh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -414,11 +452,11 @@ tab_gard
   border-top-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_striped {
+#llamfehkjh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uhaisqpdee .gt_table_body {
+#llamfehkjh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -427,7 +465,7 @@ tab_gard
   border-bottom-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_footnotes {
+#llamfehkjh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -441,13 +479,13 @@ tab_gard
   border-right-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_footnote {
+#llamfehkjh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#uhaisqpdee .gt_sourcenotes {
+#llamfehkjh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -461,46 +499,46 @@ tab_gard
   border-right-color: #D3D3D3;
 }
 
-#uhaisqpdee .gt_sourcenote {
+#llamfehkjh .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#uhaisqpdee .gt_left {
+#llamfehkjh .gt_left {
   text-align: left;
 }
 
-#uhaisqpdee .gt_center {
+#llamfehkjh .gt_center {
   text-align: center;
 }
 
-#uhaisqpdee .gt_right {
+#llamfehkjh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uhaisqpdee .gt_font_normal {
+#llamfehkjh .gt_font_normal {
   font-weight: normal;
 }
 
-#uhaisqpdee .gt_font_bold {
+#llamfehkjh .gt_font_bold {
   font-weight: bold;
 }
 
-#uhaisqpdee .gt_font_italic {
+#llamfehkjh .gt_font_italic {
   font-style: italic;
 }
 
-#uhaisqpdee .gt_super {
+#llamfehkjh .gt_super {
   font-size: 65%;
 }
 
-#uhaisqpdee .gt_footnote_marks {
+#llamfehkjh .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="uhaisqpdee" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="llamfehkjh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="5" class="gt_heading gt_title gt_font_normal" style>Garden Harvest Data</th>

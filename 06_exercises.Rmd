@@ -93,6 +93,8 @@ fakeharvest <- read_csv("https://raw.githubusercontent.com/skonadua/scraping_etc
   mutate(date=mdy(date))
 View(fakeharvest)
 
+print(fakeharvest)
+
 ```
 
   
@@ -104,6 +106,8 @@ library(readr)
 Groceries_dataset_csv <- read_csv("Groceries_dataset.csv.zip", 
     col_types = cols(Date = col_character()))
 View(Groceries_dataset_csv)
+
+print(Groceries_dataset_csv)
 
 ```
 
