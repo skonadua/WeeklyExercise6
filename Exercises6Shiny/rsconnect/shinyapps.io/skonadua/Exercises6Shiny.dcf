@@ -1,0 +1,12 @@
+name: Exercises6Shiny
+title: Exercises6Shiny
+username:
+account: skonadua
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3735761
+bundleId: 4301061
+url: https://skonadua.shinyapps.io/Exercises6Shiny/
+when: 1614878099.33008
+asMultiple: FALSE
+asStatic: FALSE
