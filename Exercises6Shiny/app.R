@@ -11,29 +11,32 @@ library(shiny)
 library(tidyverse)
 covid19 <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 
+stateslist <- covid19 %>% 
+  select(state) %>% 
+  dplyr::distinct() %>% 
+  arrange(state) %>% 
+  pull(state) 
+
 # Define UI for application that draws a histogram
-ui <- fluidPage("A State by State Comparison of",
+ui <- fluidPage("Stephanie Konadu-Acheampong",
 
     # Application title
-    titlePanel("Cumulative COVID Case Numbers Over Time"),
+    titlePanel("Comparison of Cumulative COVID Case Numbers Over Time (by State)"),
 
-    sliderInput(inputId = "date", 
-                label = "Date",
-                min = 2020-01-21, 
-                max = 2021-03-01, 
-                value = c(2020-01-21,2021-03-01),
-                sep = ""),
     selectInput("state", 
                 "State", 
-                choices = list()),
+                choices = stateslist,
+                multiple = TRUE),
     submitButton(text = "Create my plot!"),
-    plotOutput(outputId = "dateplot")
-)
+    
+    plotOutput("dateplot")
+    )
 
 server <- function(input, output) {
   output$dateplot <- renderPlot({
     covid19 %>% 
-      filter(cases >= 20) %>% 
+      filter(cases >= 20,
+             state %in% input$state) %>% 
       ggplot() +
       geom_line(aes(x = date, y = cases, color = state)) +
       theme_minimal() +
@@ -46,36 +49,4 @@ server <- function(input, output) {
 
 shinyApp(ui = ui, server = server)
     
-    
-#     # Sidebar with a slider input for number of bins 
-#     sidebarLayout(
-#         sidebarPanel(
-#             sliderInput("bins",
-#                         "Number of bins:",
-#                         min = 1,
-#                         max = 50,
-#                         value = 30)
-#         ),
-# 
-#         # Show a plot of the generated distribution
-#         mainPanel(
-#            plotOutput("distPlot")
-#         )
-#     )
-# )
-# 
-# # Define server logic required to draw a histogram
-# server <- function(input, output) {
-# 
-#     output$distPlot <- renderPlot({
-#         # generate bins based on input$bins from ui.R
-#         x    <- faithful[, 2]
-#         bins <- seq(min(x), max(x), length.out = input$bins + 1)
-# 
-#         # draw the histogram with the specified number of bins
-#         hist(x, breaks = bins, col = 'darkgray', border = 'white')
-#     })
-# }
-# 
-# # Run the application 
-# shinyApp(ui = ui, server = server)
+  

@@ -13,7 +13,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-#knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
 ```
 
 ```{r libraries}
@@ -76,20 +76,7 @@ Once your repository is created, you should always open your **project** rather 
   
 ```{r}
 
-covid19 <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 
-covid19 %>% 
-  filter(cases >= 20) %>% 
-  ggplot() +
-  geom_line(aes(x = date, y = cases, color = state)) +
-  theme_minimal() +
-scale_y_log10(breaks = 
-                  scales::trans_breaks(
-                    "log10", function(x)10^x),
-                labels = scales::comma) 
-
-
-#just do date 
   
 ```
   
@@ -104,7 +91,8 @@ library(readr)
 fakeharvest <- read_csv("https://raw.githubusercontent.com/skonadua/scraping_etc/main/2020_harvest.csv", 
     col_types = cols(weight = col_number()), na = "MISSING", 
     skip = 2) %>% 
-  select(-X1)
+  select(-X1) %>% 
+  mutate(date=mdy(date))
 View(fakeharvest)
 
 ```
@@ -138,8 +126,11 @@ View(Groceries_dataset_csv)
   
 ```{r}
 
+tomato_harvest <- garden_harvest %>% 
+  filter(vegetable == "tomatoes")
+
 tab_gard <-
-  garden_harvest %>% 
+  tomato_harvest %>% 
   gt(
     rowname_col = "row",
     groupname_col = "group"
@@ -148,7 +139,6 @@ tab_gard <-
     columns = vars(date),
     date_style = 6
   ) %>%
-    # rows_delete(c(rows > 20)) %>%  #how to keep it to 20 rows? 
   tab_footnote(
     footnote = "These are harvest weights higher than 2000.",
     locations = cells_data(
@@ -162,7 +152,7 @@ tab_gard <-
   ) %>%
   tab_header(
     title = "Garden Harvest Data",
-    subtitle = md("")
+    subtitle = md("*Tomato Edition*")
   ) %>% 
   tab_options(heading.background.color = "#003300") %>% 
   tab_options(column_labels.background.color = "#99CC00") %>% 
@@ -232,7 +222,6 @@ g2 <- gardengraph2 %>%
        x = "" ,
        y = "", 
        fill = "") +
-       # subtitle = "Stephanie Konadu-Acheampong") +
   theme_minimal() + 
   scale_fill_viridis_d() +
   scale_x_continuous(expand = c(0,0)) +
@@ -269,5 +258,3 @@ myplot + plot_annotation(title = "Tomatoes of Garden Harvest",
 
 ```
 
-
-**DID YOU REMEMBER TO UNCOMMENT THE OPTIONS AT THE TOP?**
