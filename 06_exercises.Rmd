@@ -78,15 +78,10 @@ Once your repository is created, you should always open your **project** rather 
 
 covid19 <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 
-newcovid <- covid19 %>% 
-  group_by(state) +
-  filter(cases >= 20) +
-  summarise(cumcase = cumsum(cases)) 
-
-+
+covid19 %>% 
+  filter(cases >= 20) %>% 
   ggplot() +
-  geom_line(aes(x = date, y = cases)) +
-  scale_x_continuous(limits = input$years) +
+  geom_line(aes(x = date, y = cases, color = state)) +
   theme_minimal() +
 scale_y_log10(breaks = 
                   scales::trans_breaks(
@@ -94,6 +89,7 @@ scale_y_log10(breaks =
                 labels = scales::comma) 
 
 
+#just do date 
   
 ```
   
@@ -102,23 +98,176 @@ scale_y_log10(breaks =
 
   2. Read in the fake garden harvest data. Find the data [here](https://github.com/llendway/scraping_etc/blob/main/2020_harvest.csv) and click on the `Raw` button to get a direct link to the data. 
   
+```{r}
+
+library(readr)
+fakeharvest <- read_csv("https://raw.githubusercontent.com/skonadua/scraping_etc/main/2020_harvest.csv", 
+    col_types = cols(weight = col_number()), na = "MISSING", 
+    skip = 2) %>% 
+  select(-X1)
+View(fakeharvest)
+
+```
+
+  
   3. Read in this [data](https://www.kaggle.com/heeraldedhia/groceries-dataset) from the kaggle website. You will need to download the data first. Save it to your project/repo folder. Do some quick checks of the data to assure it has been read in appropriately.
+  
+```{r}
+
+library(readr)
+Groceries_dataset_csv <- read_csv("Groceries_dataset.csv.zip", 
+    col_types = cols(Date = col_character()))
+View(Groceries_dataset_csv)
+
+```
+
 
   4. CHALLENGE(not graded): Write code to replicate the table shown below (open the .html file to see it) created from the `garden_harvest` data as best as you can. When you get to coloring the cells, I used the following line of code for the `colors` argument:
   
 ```{r, eval=FALSE}
-colors = scales::col_numeric(
-      palette = paletteer::paletteer_d(
-        palette = "RColorBrewer::YlGn"
-      ) %>% as.character()
+# colors = scales::col_numeric(
+#       palette = paletteer::paletteer_d(
+#         palette = "RColorBrewer::YlGn"
+#       ) %>% as.character()
 ```
 
-![](garden_table.html){width=600, height=1000}
+<!-- ![](garden_table.html){width=600, height=1000} -->
 
 
   5. Create a table using `gt` with data from your project or from the `garden_harvest` data if your project data aren't ready.
   
+```{r}
+
+tab_gard <-
+  garden_harvest %>% 
+  gt(
+    rowname_col = "row",
+    groupname_col = "group"
+  ) %>% 
+  fmt_date(
+    columns = vars(date),
+    date_style = 6
+  ) %>%
+    # rows_delete(c(rows > 20)) %>%  #how to keep it to 20 rows? 
+  tab_footnote(
+    footnote = "These are harvest weights higher than 2000.",
+    locations = cells_data(
+      columns = vars(weight),
+      rows = weight > 2000
+    )
+  ) %>%
+  tab_footnote(
+    footnote = "All values are in grams.",
+    locations = cells_column_labels(columns = vars(weight))
+  ) %>%
+  tab_header(
+    title = "Garden Harvest Data",
+    subtitle = md("")
+  ) %>% 
+  tab_options(heading.background.color = "#003300") %>% 
+  tab_options(column_labels.background.color = "#99CC00") %>% 
+  data_color(
+    columns = vars(weight),
+    colors = scales::col_numeric(
+      palette = paletteer::paletteer_d("ghibli::MarnieLight2") %>% 
+        as.character(),
+      domain = NULL
+    ))
+
+tab_gard
+
+#how to limit to 20 rows ?
+
+```
+
+  
   6. Use `patchwork` operators and functions to combine at least two graphs using your project data or `garden_harvest` data if your project data aren't read.
   
+```{r}
+
+garden_cum <- garden_harvest %>% 
+  filter(vegetable == "tomatoes") %>% 
+  group_by(date, variety) %>% 
+  summarize(daily_harvest_lb = sum(weight)*0.00220462) %>% 
+  ungroup() %>% 
+  complete(variety, date, fill = list(daily_harvest_lb = 0)) %>% 
+  group_by(variety) %>% 
+  mutate(cum_harvest_lb = cumsum(daily_harvest_lb)) %>%
+  ungroup() %>% 
+  mutate(variety = fct_reorder(variety, daily_harvest_lb, sum))
+
+g1 <- garden_cum %>% 
+  ggplot(aes(x = date, 
+             y = cum_harvest_lb,  
+             fill = variety)) +
+  geom_area(position = "stack") +
+  labs(title = "Cumulative Tomato Harvest",
+       subtitle = "(in grams)", 
+       x = "", 
+       y = "", 
+       color = "variety") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "black",
+                                 linetype = "solid"), 
+        axis.ticks = element_line(color = "black")) 
+
+  
+gardengraph2 <- garden_harvest %>%
+  filter(vegetable == "tomatoes") %>% 
+  group_by(variety) %>% 
+  mutate(pounds = (weight * .0022046)) %>% 
+  mutate(medweight = sum(pounds))
+  
+
+g2 <- gardengraph2 %>%
+  mutate(uppercase = str_to_title(variety))%>%
+  arrange(medweight.by_group = variety) %>%
+  ggplot(mapping = aes(x = pounds, 
+                       y = fct_reorder(uppercase, medweight))) +
+  geom_bar(stat="identity", 
+           aes(fill = fct_rev(month(date, label = TRUE)))) +
+  ggtitle("Cumulative Tomato Weight") +
+  labs(subtitle= "by Variety and Month Harvested (in pounds)",
+       x = "" ,
+       y = "", 
+       fill = "") +
+       # subtitle = "Stephanie Konadu-Acheampong") +
+  theme_minimal() + 
+  scale_fill_viridis_d() +
+  scale_x_continuous(expand = c(0,0)) +
+  theme(plot.title.position= "plot", 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank())
+  
+g3 <- garden_harvest %>% 
+  filter(vegetable == "tomatoes") %>% 
+  group_by(variety) %>% 
+  summarize(pounds = sum(weight * 0.00220462), 
+            harvest1 = min(date)) %>%
+  ggplot(aes(x = pounds, 
+             y = fct_reorder(variety, harvest1))) +
+  geom_bar(stat = "identity", 
+           fill = "brown4") +
+  labs(title = "Cumulative Weight of Tomatoes", 
+       subtitle = "by 1st Harvest Date (in pounds)",
+       x = "", 
+       y = "Variety by First Harvest Date")
+  
+
+
+```
+
+
+```{r}
+
+myplot <- g1 | (g2/g3) 
+
+myplot + plot_annotation(title = "Tomatoes of Garden Harvest", 
+                         subtitle = "variations on a theme", 
+                         caption = "Stephanie Konadu-Acheampong")
+
+```
+
 
 **DID YOU REMEMBER TO UNCOMMENT THE OPTIONS AT THE TOP?**

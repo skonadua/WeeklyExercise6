@@ -33,11 +33,14 @@ ui <- fluidPage("A State by State Comparison of",
 server <- function(input, output) {
   output$dateplot <- renderPlot({
     covid19 %>% 
-      filter(state == input$state) %>% 
+      filter(cases >= 20) %>% 
       ggplot() +
-      geom_line(aes(x = date, y = cases)) +
-      scale_x_continuous(limits = input$years) +
-      theme_minimal()
+      geom_line(aes(x = date, y = cases, color = state)) +
+      theme_minimal() +
+      scale_y_log10(breaks = 
+                      scales::trans_breaks(
+                        "log10", function(x)10^x),
+                    labels = scales::comma)
   })
 }
 
